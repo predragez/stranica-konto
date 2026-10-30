@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="sr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KONTO - Knjigovodstvena Agencija</title>
+    <link rel="icon" type="image/png" href="slike/k_krug.png">
+    <link rel="apple-touch-icon" href="slike/konto.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warm: {
+                            bg: '#FAF7F2',
+                            cream: '#F2ECE1',
+                            border: '#E4DDD0',
+                            charcoal: '#1C221E',
+                            slate: '#4A544D',
+                        },
+                        forest: {
+                            DEFAULT: '#1B3B2B',
+                            light: '#244A37',
+                            dark: '#12281D',
+                            soft: '#E9F0EC',
+                        },
+                        bronze: {
+                            DEFAULT: '#B57445',
+                            light: '#C88A56',
+                            dark: '#965B30',
+                            soft: '#F7EFE8',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Lora', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF7F2;
+            color: #1C221E;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .font-prestige {
+            font-family: 'Lora', Georgia, serif;
+            letter-spacing: -0.01em;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #F2ECE1; }
+        ::-webkit-scrollbar-thumb { background: #B57445; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1B3B2B; }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .grab-scroll {
+            cursor: grab;
+            user-select: none;
+        }
+        .grab-scroll.active {
+            cursor: grabbing;
+        }
+
+        .prestige-pattern {
+            background-image: radial-gradient(#B57445 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+        }
+
+        body.editor-open #main-workspace {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            overflow: hidden;
+        }
+        body.editor-open #live-code-drawer {
+            display: flex !important;
+            width: 44%;
+            min-width: 340px;
+            max-width: 680px;
+            height: 100vh;
+            flex-shrink: 0;
+        }
+        body.editor-open #viewport-stage {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        #viewport-stage.mobile-mode-stage {
+            background-color: #16241C;
+            background-image: radial-gradient(#B57445 0.65px, transparent 0.65px);
+            background-size: 20px 20px;
+            padding: 28px 12px 96px 12px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        #app-shell.mobile-mode {
+            width: 390px;
+            max-width: 100%;
+            background-color: #FAF7F2;
+            border-radius: 42px;
+            border: 10px solid #1C221E;
+            box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.65), 0 0 0 2px #B57445;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #phone-status-bar {
+            display: none;
+        }
+        #app-shell.mobile-mode #phone-status-bar {
+            display: flex;
+        }
+
+        #app-shell.mobile-mode .top-bar-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.45rem 0.5rem !important;
+            text-align: left !important;
+        }
+        #app-shell.mobile-mode .top-bar-item {
+            justify-content: flex-start !important;
+            font-size: 11px !important;
+            border-right: none !important;
+        }
+        #app-shell.mobile-mode .header-inner {
+            height: 4.5rem !important;
+            padding-left: 0.875rem !important;
+            padding-right: 0.875rem !important;
+        }
+        #app-shell.mobile-mode .brand-subtitle {
+            font-size: 10.5px !important;
+            max-width: 175px !important;
+            line-height: 1.25 !important;
+        }
+        #app-shell.mobile-mode .header-cta-btn {
+            padding: 0.5rem 0.75rem !important;
+            font-size: 12px !important;
+        }
+        #app-shell.mobile-mode .header-cta-text {
+            display: none !important;
+        }
+        #app-shell.mobile-mode .menu-label-text {
+            display: none !important;
+        }
+
+        #app-shell.mobile-mode .resp-grid-1 {
+            grid-template-columns: 1fr !important;
+        }
+        #app-shell.mobile-mode .resp-col-span-full {
+            grid-column: span 1 / span 1 !important;
+        }
+        #app-shell.mobile-mode .resp-stats-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 0.75rem !important;
+        }
+        #app-shell.mobile-mode .resp-stack {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+        #app-shell.mobile-mode .resp-hero-title {
+            font-size: 1.875rem !important;
+            line-height: 1.22 !important;
+        }
+        #app-shell.mobile-mode .resp-sec-title {
+            font-size: 1.65rem !important;
+            line-height: 1.25 !important;
+        }
+        #app-shell.mobile-mode .resp-section-pad {
+            padding-top: 3rem !important;
+            padding-bottom: 3rem !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+        #app-shell.mobile-mode .resp-card-pad {
+            padding: 1.35rem !important;
+        }
+        #app-shell.mobile-mode .resp-full-btn {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+        #app-shell.mobile-mode .client-logo-item {
+            width: 72% !important;
+            scroll-snap-align: center !important;
+        }
+        #app-shell.mobile-mode #clients-scroll-container {
+            padding-left: 14% !important;
+            padding-right: 14% !important;
+        }
+        #app-shell.mobile-mode #clients-mobile-arrows {
+            display: flex !important;
+        }
+        #app-shell.mobile-mode .service-carousel-card {
+            width: 100% !important;
+        }
+        #app-shell.mobile-mode #services-fade-mask,
+        #app-shell.mobile-mode #services-fade-mask-left {
+            display: none !important;
+        }
+        #app-shell.mobile-mode #services-mobile-arrows {
+            display: flex !important;
+        }
+        #app-shell.mobile-mode #rokovi-carousel-track {
+            display: flex !important;
+            overflow-x: auto !important;
+        }
+        #app-shell.mobile-mode .rokovi-carousel-card {
+            width: 100% !important;
+            flex-shrink: 0 !important;
+        }
+        #app-shell.mobile-mode #rokovi-mobile-controls,
+        #app-shell.mobile-mode #rokovi-mobile-dots {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-workspace">
+
+        <aside id="live-code-drawer" class="hidden flex-col bg-[#141D18] text-warm-cream border-r-2 border-bronze/50 z-40">
+            <div class="p-3.5 bg-forest-dark border-b border-white/10 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-lg bg-bronze text-white flex items-center justify-center text-sm font-bold">
+                        <i class="fa-solid fa-code"></i>
+                    </span>
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-white">Uživo HTML / CSS Editor</h3>
+                        <p class="text-[11px] text-warm-cream/70">Izmijenite tekst ili stil i kliknite „Primijeni izmjene“</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="applyLiveCodeChanges()" class="px-3 py-1.5 rounded-lg bg-bronze hover:bg-bronze-light text-white text-xs font-bold shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-play text-[10px]"></i>
+                        <span>Primijeni izmjene</span>
+                    </button>
+                    <button onclick="toggleCodeEditor()" title="Zatvori editor" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-warm-cream flex items-center justify-center text-sm transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="px-3.5 py-2 bg-[#1A2620] border-b border-white/10 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[11px]">
+                <span class="text-bronze-light font-bold shrink-0 mr-1"><i class="fa-solid fa-magnifying-glass mr-1"></i>Pronađi:</span>
+                <button onclick="jumpInEditor('top-bar-grid')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-bronze/30 text-warm-cream shrink-0 transition">Gornja traka</button>
+                <button onclick="jumpInEditor('Kontaktirajte nas')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-bronze/30 text-warm-cream shrink-0 transition">Zaglavlje / Meni</button>
+                <button onclick="jumpInEditor('Tradicija, preciznost')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-bronze/30 text-warm-cream shrink-0 transition">Hero slogan</button>
+                <button onclick="jumpInEditor('id=&quot;usluge&quot;')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-bronze/30 text-warm-cream shrink-0 transition">Usluge</button>
+                <button onclick="jumpInEditor('id=&quot;poslovodja&quot;')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-bronze/30 text-warm-cream shrink-0 transition">Poslovođa</button>
+                <button onclick="jumpInEditor('id=&quot;klijenti&quot;')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-bronze/30 text-warm-cream shrink-0 transition">Klijenti</button>
+                <button onclick="jumpInEditor('id=&quot;kontakt&quot;')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-bronze/30 text-warm-cream shrink-0 transition">Kontakt</button>
+            </div>
+
+            <textarea 
+                id="live-code-textarea" 
+                spellcheck="false"
+                class="flex-1 w-full bg-[#0F1713] text-[#E6EFEA] font-mono text-xs leading-relaxed p-4 focus:outline-none resize-none selection:bg-bronze selection:text-white"
+            ></textarea>
+
+            <div class="px-4 py-2.5 bg-forest-dark border-t border-white/10 flex items-center justify-between text-[11px] text-warm-cream/70">
+                <span><i class="fa-regular fa-lightbulb text-bronze-light mr-1"></i> Savjet: Prečica <strong>Ctrl + Enter</strong> odmah primjenjuje izmjene</span>
+                <button onclick="resetEditorToOriginal()" class="text-bronze-light hover:underline font-semibold">
+                    Vrati početni kod
+                </button>
+            </div>
+        </aside>
+
+        <div id="viewport-stage" class="transition-all duration-300">
+            <div id="app-shell" class="w-full transition-all duration-300">
+
+                <div id="phone-status-bar" class="bg-forest-dark text-warm-cream px-6 pt-2.5 pb-1.5 items-center justify-between text-[11px] font-semibold border-b border-white/10">
+                    <span>09:41</span>
+                    <div class="w-20 h-3.5 bg-black rounded-full"></div>
+                    <div class="flex items-center gap-1.5 text-[10px]">
+                        <i class="fa-solid fa-signal"></i>
+                        <i class="fa-solid fa-wifi"></i>
+                        <i class="fa-solid fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <div id="editable-site-root">
+
+                    <div id="pocetna" class="hidden lg:grid bg-forest-dark text-warm-cream/95 text-xs border-b border-white/10">
+                        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 w-full">
+                            <div class="top-bar-grid grid grid-cols-2 lg:grid-cols-4 gap-y-2 gap-x-3 items-center">
+                                
+                                <div class="top-bar-item flex items-center justify-start lg:justify-center gap-2 lg:border-r lg:border-white/10">
+                                    <i class="fa-solid fa-location-dot text-bronze-light shrink-0"></i>
+                                    <span class="truncate">Kralja Petra I Karađorđevića I/8, Zvornik</span>
+                                </div>
+
+                                <div class="top-bar-item flex items-center justify-start lg:justify-center gap-2 lg:border-r lg:border-white/10">
+                                    <a href="mailto:konto.olivera@yahoo.com" class="hover:text-bronze-light transition flex items-center gap-2 font-medium truncate">
+                                        <i class="fa-solid fa-envelope text-bronze-light shrink-0"></i>
+                                        <span class="truncate">konto.olivera@yahoo.com</span>
+                                    </a>
+                                </div>
+
+                                <div class="top-bar-item flex items-center justify-start lg:justify-center gap-2 lg:border-r lg:border-white/10">
+                                    <a href="tel:+38766892554" class="hover:text-bronze-light transition flex items-center gap-1.5 font-semibold truncate">
+                                        <i class="fa-solid fa-phone text-bronze-light shrink-0"></i>
+                                        <span>+387 (0)66 892-554</span>
+                                    </a>
+                                </div>
+
+                                <div class="top-bar-item flex items-center justify-start lg:justify-center gap-2">
+                                    <i class="fa-regular fa-clock text-bronze-light shrink-0"></i>
+                                    <span class="truncate">Pon – Pet: 08:00 – 16:00h</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <header class="sticky top-0 z-40 bg-warm-bg/95 backdrop-blur-md border-b border-warm-border shadow-sm">
+                        <div class="header-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+                            
+                            <a href="#pocetna" class="flex items-center gap-3 sm:gap-3.5 group min-w-0">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-[#1b3b2b] flex items-center justify-center shadow-md border border-bronze/40">
+                                    <svg class="h-7 w-7 text-[#FFFAFA]" viewBox="0 0 100 100" fill="currentColor">
+                                        <polygon points="18,32 22,28 45,14 45,86 22,86 22,36" />
+                                        <polygon points="55,54 82,86 64,86 48,66" />
+                                        <path d="M55,46 C60,34 66,28 73,28 C80,28 84,33 84,39 C84,45 79,50 72,50 C67,50 63,45 55,46 Z" />
+                                    </svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center">
+                                        <span class="font-prestige text-xl sm:text-2xl font-bold text-forest tracking-tight leading-none">KONTO</span>
+                                    </div>
+                                    <span class="mobile-brand-sub block sm:hidden text-[10px] text-warm-slate font-medium mt-0.5 leading-tight">
+                                        Knjigovodstvena<br>Agencija
+                                    </span>
+                                    <p class="brand-subtitle hidden sm:block text-xs text-warm-slate font-medium mt-1 leading-snug">
+                                        Agencija za knjigovodstveno-računovodstvene usluge
+                                    </p>
+                                </div>
+                            </a>
+
+                            <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                                
+                                <a href="#kontakt" class="header-cta-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-forest hover:bg-forest-light text-warm-bg font-semibold text-xs sm:text-sm shadow-md transition">
+                                    <i class="fa-solid fa-phone text-bronze-light"></i>
+                                    <span class="header-cta-text">Kontaktirajte nas</span>
+                                </a>
+
+                                <div id="dropdown-menu-wrapper" class="relative">
+                                    <button id="hamburger-btn" onclick="toggleDropdownMenu(event)" aria-label="Otvori navigacioni meni" class="h-11 px-3.5 sm:px-4 rounded-xl border border-warm-border bg-white hover:bg-warm-cream text-forest font-semibold text-sm flex items-center justify-center gap-2.5 shadow-sm transition">
+                                        <span class="menu-label-text hidden sm:inline text-xs font-bold uppercase tracking-wider text-forest">Meni</span>
+                                        <i id="hamburger-icon" class="fa-solid fa-bars text-lg text-forest"></i>
+                                    </button>
+
+                                    <nav id="header-dropdown-menu" class="hidden absolute right-0 mt-2.5 w-52 bg-white rounded-2xl shadow-2xl border border-warm-border py-2 z-50 overflow-hidden">
+                                        <a href="#pocetna" onclick="closeDropdownMenu()" class="block px-5 py-2.5 text-sm font-semibold text-warm-charcoal hover:bg-warm-cream hover:text-forest transition">
+                                            Početna
+                                        </a>
+                                        <a href="#usluge" onclick="closeDropdownMenu()" class="block px-5 py-2.5 text-sm font-semibold text-warm-charcoal hover:bg-warm-cream hover:text-forest transition">
+                                            Usluge
+                                        </a>
+                                        <a href="#poslovodja" onclick="closeDropdownMenu()" class="block px-5 py-2.5 text-sm font-semibold text-warm-charcoal hover:bg-warm-cream hover:text-forest transition">
+                                            Poslovođa
+                                        </a>
+                                        <a href="#klijenti" onclick="closeDropdownMenu()" class="block px-5 py-2.5 text-sm font-semibold text-warm-charcoal hover:bg-warm-cream hover:text-forest transition">
+                                            Klijenti
+                                        </a>
+                                        <a href="#rokovi" onclick="closeDropdownMenu()" class="block px-5 py-2.5 text-sm font-semibold text-warm-charcoal hover:bg-warm-cream hover:text-forest transition">
+                                            Poreski kalendar
+                                        </a>
+                                        <a href="#cesta-pitanja" onclick="closeDropdownMenu()" class="block px-5 py-2.5 text-sm font-semibold text-warm-charcoal hover:bg-warm-cream hover:text-forest transition">
+                                            Česta pitanja
+                                        </a>
+                                        <a href="#kontakt" onclick="closeDropdownMenu()" class="block px-5 py-2.5 text-sm font-semibold text-warm-charcoal hover:bg-warm-cream hover:text-forest transition">
+                                            Kontakt
+                                        </a>
+                                    </nav>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </header>
+
+                    <section class="resp-section-pad relative bg-forest text-warm-bg overflow-hidden py-14 sm:py-20 lg:py-24 border-b-4 border-bronze">
+                        <div class="absolute inset-0 opacity-10 prestige-pattern pointer-events-none"></div>
+                        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-bronze/20 blur-3xl pointer-events-none"></div>
+
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                            <div class="resp-grid-1 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                                
+                                <div class="resp-col-span-full lg:col-span-7 space-y-6">
+                                    
+                                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 border border-bronze-light/40 text-bronze-light text-xs sm:text-sm font-semibold tracking-wide">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                        <span>Pouzdan finansijski oslonac u Zvorniku i regiji</span>
+                                    </div>
+
+                                    <h1 class="resp-hero-title font-prestige text-3xl sm:text-5xl lg:text-[52px] font-bold leading-[1.18] text-white">
+                                        Partner na kojeg se vaš biznis oslanja.
+                                    </h1>
+
+                                    <p class="text-warm-cream/90 text-base sm:text-lg leading-relaxed max-w-2xl font-normal">
+                                        Pod stručnim rukovodstvom Olivere Radovanović, dipl. ekonomiste, pružamo sveobuhvatne knjigovodstvene, poreske i savjetodavne usluge za privredna društva (D.O.O.) i samostalne preduzetnike. Uspješan biznis traži dobru ideju, a stabilan biznis traži uredne knjige. Prepustite nama ovaj drugi dio.
+                                    </p>
+
+                                    <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                                        <a href="#kontakt" class="resp-full-btn px-7 py-4 rounded-xl bg-bronze hover:bg-bronze-light text-white font-semibold text-base shadow-lg transition inline-flex items-center gap-2.5">
+                                            <i class="fa-solid fa-calendar"></i>
+                                            <span>Zakažite sastanak sa nama</span>
+                                        </a>
+                                        <a href="#usluge" class="resp-full-btn px-7 py-4 rounded-xl border border-warm-cream/35 hover:bg-white/10 text-warm-bg font-semibold text-base transition inline-flex items-center gap-2">
+                                            <span>Pogledajte naše usluge</span>
+                                            <i class="fa-solid fa-arrow-down text-xs text-bronze-light"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="resp-stats-grid pt-8 mt-4 border-t border-white/15 grid grid-cols-3 gap-6">
+                                        <div>
+                                            <div class="font-prestige text-3xl sm:text-4xl font-bold text-bronze-light">30</div>
+                                            <div class="text-xs sm:text-sm text-warm-cream/85 font-medium mt-1">Godina iskustva</div>
+                                        </div>
+                                        <div>
+                                            <div class="font-prestige text-3xl sm:text-4xl font-bold text-bronze-light">60+</div>
+                                            <div class="text-xs sm:text-sm text-warm-cream/85 font-medium mt-1">Aktivnih klijenata</div>
+                                        </div>
+                                        <div>
+                                            <div class="font-prestige text-3xl sm:text-4xl font-bold text-bronze-light">100%</div>
+                                            <div class="text-xs sm:text-sm text-warm-cream/85 font-medium mt-1">Zakonska sigurnost</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="resp-col-span-full lg:col-span-5">
+                                    <div class="relative mx-auto max-w-md">
+                                        <div class="absolute -inset-2.5 rounded-3xl bg-gradient-to-tr from-bronze/40 via-bronze/15 to-transparent blur-md pointer-events-none"></div>
+                                        
+                                        <div class="relative bg-warm-bg text-warm-charcoal rounded-2xl overflow-hidden shadow-2xl border-2 border-bronze/50">
+                                            <div class="relative aspect-square w-full overflow-hidden">
+                                                <img 
+                                                    src="slike/ol1.png" 
+                                                    alt="Olivera Radovanović - Osnivač i ovlašćeni računovođa agencije Konto" 
+                                                    onerror="this.src='https://placehold.co/600x600/1B3B2B/FAF7F2?text=Olivera+Radovanovic'"
+                                                    class="w-full h-full aspect-square object-cover object-top"
+                                                >
+                                            </div>
+
+                                            <div class="resp-card-pad p-6 sm:p-7 bg-white">
+                                                <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-bronze-dark mb-1">
+                                                    <span>Osnivač i poslovođa agencije</span>
+                                                </div>
+                                                <h2 class="font-prestige text-2xl font-bold text-forest">Olivera Radovanović</h2>
+                                                <p class="text-xs sm:text-sm text-warm-slate font-medium mt-1">
+                                                    Ovlašćeni revizor i sertifikovani računovođa
+                                                </p>
+                                                <blockquote class="mt-4 pt-4 border-t border-warm-border text-xs sm:text-sm italic text-warm-charcoal leading-relaxed">
+                                                    „Preciznost u brojevima, odgovornost u radu i povjerenje u odnosu s klijentima — to su vrijednosti na kojima gradimo Konto.“
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="usluge" class="resp-section-pad py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                        <div class="resp-stack flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-12 gap-6 border-b border-warm-border pb-8">
+                            <div>
+                                <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-bronze-soft text-bronze-dark border border-bronze/25 mb-3">
+                                    <i class="fa-solid fa-briefcase"></i> Djelatnosti agencije „Konto“
+                                </span>
+                                <h2 class="resp-sec-title font-prestige text-3xl sm:text-4xl font-bold text-forest">
+                                    Stručne knjigovodstvene i poreske usluge
+                                </h2>
+                                <p class="text-warm-slate text-base max-w-2xl leading-relaxed mt-2.5">
+                                    Pružamo kompletnu finansijsku podršku prilagođenu obimu i djelatnosti Vašeg poslovanja - od osnivanja preduzeća do izrade završnih računa i zastupanja pred poreskim organima.
+                                </p>
+                            </div>
+
+                            <div id="services-mobile-arrows" class="flex lg:hidden items-center gap-3 self-start shrink-0">
+                                <span class="text-xs font-semibold text-warm-slate mr-1">Listajte usluge:</span>
+                                <button onclick="scrollServicesCarousel(-1)" aria-label="Prethodna usluga" class="w-11 h-11 rounded-xl bg-white border border-warm-border hover:border-forest hover:bg-forest hover:text-white text-forest flex items-center justify-center shadow-sm transition">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <button onclick="scrollServicesCarousel(1)" aria-label="Sljedeća usluga" class="w-11 h-11 rounded-xl bg-white border border-warm-border hover:border-forest hover:bg-forest hover:text-white text-forest flex items-center justify-center shadow-sm transition">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div 
+                                id="services-carousel-track" 
+                                class="flex items-stretch gap-5 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth py-2 px-0.5 grab-scroll"
+                            >
+                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-book-open"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">01</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Računovodstvo za D.O.O. (Dvojno knjigovodstvo)
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Kompletno finansijsko i robno-materijalno knjigovodstvo za mikro, mala i srednja privredna društva u skladu sa MRS/MSFI standardima.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Glavna knjiga, dnevnik i analitika kupaca i dobavljača</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Robno-materijalno knjigovodstvo, veleprodaja i maloprodaja</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Evidencija osnovnih sredstava i obračun amortizacije</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-store"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">02</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Knjigovodstvo za samostalne preduzetnike (SP)
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Pouzdano vođenje poslovnih knjiga po sistemu prostog knjigovodstva za zanatske, trgovinske, ugostiteljske i uslužne radnje.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Knjiga prihoda i rashoda (KPR) i trgovačka knjiga</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Praćenje statusa malog preduzetnika i zakonskih pragova</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Godišnje poreske prijave poreza na dohodak</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-truck-moving"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">03</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Povrat PDV-a prevoznicima iz Srbije, Crne Gore i S. Makedonije
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Povrat PDV-a prevoznicima koji su registrovani u svojim državama, a bave se prevozom robe kroz teritoriju BiH i sipaju gorivo unutar BiH.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Kompletna priprema i podnošenje zahtjeva za povrat PDV-a prema UIO BiH</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Obrada računa za kupljeno gorivo i druge prateće troškove u BiH</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Zastupanje stranih prevoznika u postupku refundacije pred poreskim organima</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">04</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Obračun PDV-a i e-Evidencije (KUF i KIF)
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Precizno vođenje PDV evidencija, elektronsko podnošenje e-PDV prijava Upravi za indirektno oporezivanje (UIO BiH) i spoljnotrgovinski poslovi.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Mjesečni obračun PDV-a i predaja e-KUF / e-KIF do 10. u mjesecu</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Knjiženje uvoznih i izvoznih carinskih deklaracija (JCI)</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Zahtjevi za povrat PDV-a i preknjižavanje poreskih kredita</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-users-gear"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">05</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Obračun plata i kadrovska evidencija
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Kompletna briga o radnim odnosima: ugovori o radu, prijave i odjave radnika, obračun zarada, doprinosa, naknada i bolovanja.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Obračun plata, toplog obroka, regresa i naknada prevoza</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Elektronsko podnošenje Obrasca 1002 i prijava u Jedinstveni sistem</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Postupci refundacije bolovanja i porodiljskog odsustva</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-scale-balanced"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">06</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Završni računi i finansijski izvještaji
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Izrada godišnjih finansijskih izvještaja (Bilans stanja, Bilans uspjeha, Tokovi gotovine) i predaja u APIF.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Redovni godišnji i polugodišnji finansijski obračuni za APIF</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Izrada poreskog bilansa i godišnje prijave poreza na dobit</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Priprema dokumentacije i boniteta za bankarske kredite</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-shield-halved"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">07</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Poresko savjetovanje i osnivanje firmi
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Stručna pomoć pri izboru pravne forme i registraciji preduzeća, te zastupanje pred Poreskom upravom RS i inspektoratima.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Savjetovanje pri osnivanju D.O.O. ili preduzetničke radnje</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Zakonita optimizacija poreskih obaveza i korišćenje olakšica</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Direktno zastupanje tokom poreskih i inspekcijskih kontrola</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div id="services-fade-mask-left" class="hidden lg:flex pointer-events-none opacity-0 absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-warm-bg/90 via-warm-bg/40 to-transparent items-center justify-start pl-2 transition-opacity duration-300">
+                                <button id="services-left-float-btn" onclick="scrollServicesCarousel(-1)" aria-label="Prethodna usluga" class="pointer-events-none w-12 h-12 rounded-full bg-forest hover:bg-bronze text-warm-bg shadow-xl border-2 border-warm-bg flex items-center justify-center transition transform hover:scale-105">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                            </div>
+
+                            <div id="services-fade-mask" class="hidden lg:flex pointer-events-none absolute inset-y-0 right-0 w-36 bg-gradient-to-l from-warm-bg/90 via-warm-bg/40 to-transparent items-center justify-end pr-2 transition-opacity duration-300">
+                                <button id="services-right-float-btn" onclick="scrollServicesCarousel(1)" aria-label="Sljedeća usluga" class="pointer-events-auto w-12 h-12 rounded-full bg-forest hover:bg-bronze text-warm-bg shadow-xl border-2 border-warm-bg flex items-center justify-center transition transform hover:scale-105">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="resp-stack mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="w-40 sm:w-56 h-1.5 bg-warm-cream rounded-full overflow-hidden">
+                                <div id="services-scroll-progress" class="h-full bg-bronze rounded-full transition-all duration-300" style="width: 20%;"></div>
+                            </div>
+                            <p class="text-xs text-warm-slate flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-left-right text-bronze"></i>
+                                <span>Prevucite ili koristite strelice za pregled svih usluga</span>
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="poslovodja" class="resp-section-pad py-16 sm:py-24 bg-warm-cream border-y border-warm-border">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            
+                            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+                                <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-forest text-warm-bg mb-3">
+                                    <i class="fa-solid fa-user-tie text-bronze-light"></i> Rukovodstvo i Kredencijali
+                                </span>
+                                <h2 class="resp-sec-title font-prestige text-3xl sm:text-4xl lg:text-5xl font-bold text-forest">
+                                    Poslovođa i osnivač agencije „Konto“
+                                </h2>
+                                <p class="mt-3 text-warm-slate text-base sm:text-lg">
+                                    Lična odgovornost, višedecenijsko iskustvo i zvanične stručne licence kao garancija ispravnosti Vaših poslovnih knjiga.
+                                </p>
+                            </div>
+
+                            <div class="bg-white rounded-3xl border border-warm-border shadow-xl overflow-hidden">
+                                <div class="resp-grid-1 grid grid-cols-1 lg:grid-cols-12">
+                                    
+                                    <div class="resp-col-span-full resp-card-pad lg:col-span-5 bg-forest text-warm-bg p-7 sm:p-10 flex flex-col justify-between relative">
+                                        <div>
+                                            <div class="relative aspect-square w-full rounded-2xl overflow-hidden border-2 border-bronze/50 shadow-lg mb-6">
+                                                <img 
+                                                    src="slike/ol3.png" 
+                                                    alt="Olivera Radovanović - Osnivač i poslovođa agencije Konto" 
+                                                    onerror="this.src='https://placehold.co/600x600/1B3B2B/FAF7F2?text=Olivera+Radovanovic'"
+                                                    class="w-full h-full aspect-square object-cover object-top"
+                                                >
+                                            </div>
+
+                                            <span class="text-xs font-bold uppercase tracking-widest text-bronze-light block">
+                                                Osnivač i poslovođa agencije
+                                            </span>
+                                            <h3 class="font-prestige text-2xl sm:text-3xl font-bold text-white mt-1">
+                                                Olivera Radovanović
+                                            </h3>
+                                            <p class="text-sm text-warm-cream/85 mt-1">
+                                                Diplomirani ekonomista • Sertifikovani računovođa • Ovlašćeni revizor 
+                                            </p>
+                                        </div>
+
+                                        <div class="mt-6 pt-6 border-t border-white/15 space-y-3 text-xs sm:text-sm">
+                                            <div class="flex items-center gap-3 bg-white/10 px-4 py-3 rounded-xl border border-white/10">
+                                                <i class="fa-solid fa-id-card-clip text-bronze-light text-lg shrink-0"></i>
+                                                <div>
+                                                    <div class="font-bold text-white">Licenca Saveza računovođa i revizora RS</div>
+                                                    <div class="text-warm-cream/75 text-xs">Ovlašćeni potpisnik finansijskih izvještaja</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-3 bg-white/10 px-4 py-3 rounded-xl border border-white/10">
+                                                <i class="fa-solid fa-building-columns text-bronze-light text-lg shrink-0"></i>
+                                                <div>
+                                                    <div class="font-bold text-white">Već 20 godina na čelu agencije „Konto“</div>
+                                                    <div class="text-warm-cream/75 text-xs">Zvornik, Kralja Petra I Karađorđevića I/8</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="resp-col-span-full resp-card-pad lg:col-span-7 p-7 sm:p-10 lg:p-12 flex flex-col justify-between">
+                                        <div class="space-y-6">
+                                            <div>
+                                                <h4 class="font-prestige text-2xl font-bold text-forest mb-3">
+                                                    Stručnost i lični pristup svakom klijentu
+                                                </h4>
+                                                <p class="text-warm-slate text-base leading-relaxed">
+                                                    <strong>Olivera Radovanović</strong> je osnovala Agenciju za knjigovodstveno-računovodstvene usluge <strong>„Konto“</strong> u Zvorniku 2007. godine, sa vizijom da domaćim privrednicima i preduzetnicima obezbijedi pouzdan oslonac u svim fazama poslovanja.
+                                                </p>
+                                                <p class="text-warm-slate text-base leading-relaxed mt-3">
+                                                    U agenciji lično sa Vama rade kako poslovođa Olivera, tako i njen tim od 4 sertifikovane računovođe i računovodstvena tehničara. 
+                                                </p>
+                                            </div>
+
+                                            <div class="pt-2">
+                                                <div class="flex flex-wrap gap-2 border-b border-warm-border pb-3 mb-5">
+                                                    <button type="button" id="tab-btn-obrazovanje" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition bg-forest text-white shadow-sm cursor-default">
+                                                        <i class="fa-solid fa-graduation-cap mr-1.5 text-bronze-light"></i> Obrazovanje i iskustvo
+                                                    </button>
+                                                </div>
+
+                                                <div id="tab-content-obrazovanje" class="space-y-3">
+                                                    <div class="p-4 rounded-xl bg-warm-bg border border-warm-border">
+                                                        <div class="font-bold text-forest text-sm sm:text-base">Ekonomski fakultet — Diplomirani ekonomista</div>
+                                                        <p class="text-xs sm:text-sm text-warm-slate mt-0.5">Uža oblast: Računovodstvo, revizija i poslovne finansije.</p>
+                                                    </div>
+                                                    <div class="p-4 rounded-xl bg-warm-bg border border-warm-border">
+                                                        <div class="font-bold text-forest text-sm sm:text-base">Osnivač agencije „Konto“ Zvornik (od 2007. godine)</div>
+                                                        <p class="text-xs sm:text-sm text-warm-slate mt-0.5">20 godina uspješnog vođenja agencije i saradnje sa preko 100 privrednih subjekata u regiji, kao i 10 godina prijašnjeg iskustva u poslu.</p>
+                                                    </div>
+                                                    <div class="p-4 rounded-xl bg-warm-bg border border-warm-border">
+                                                        <div class="font-bold text-forest text-sm sm:text-base">Član Saveza računovođa i revizora Republike Srpske</div>
+                                                        <p class="text-xs sm:text-sm text-warm-slate mt-0.5">Aktivno učešće na stručnim savjetovanjima i puna primjena kodeksa profesionalne etike računovođa.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="resp-stack mt-8 pt-6 border-t border-warm-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-full bg-forest-soft text-forest flex items-center justify-center font-bold shrink-0">
+                                                    <i class="fa-solid fa-phone"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-xs text-warm-slate">Direktan kontakt telefon (Poziv/Viber):</div>
+                                                    <a href="tel:+38766892554" class="text-sm font-bold text-forest hover:text-bronze transition">+387 (0)65 954-178</a>
+                                                </div>
+                                            </div>
+                                            <a href="#kontakt" class="resp-full-btn px-6 py-3 rounded-xl bg-forest hover:bg-forest-light text-white text-sm font-semibold transition shadow-sm inline-flex items-center gap-2">
+                                                <i class="fa-solid fa-envelope text-bronze-light"></i>
+                                                <span>Pošaljite upit poslovođi</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section id="klijenti" class="resp-section-pad py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                        
+                        <div class="resp-stack flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                            <div>
+                                <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-bronze-soft text-bronze-dark border border-bronze/25 mb-3">
+                                    <i class="fa-solid fa-building"></i> Referentna lista klijenata
+                                </span>
+                                <h2 class="resp-sec-title font-prestige text-3xl sm:text-4xl font-bold text-forest">
+                                    Preduzeća koja nam ukazuju povjerenje
+                                </h2>
+                                <p class="text-warm-slate text-base mt-2 max-w-2xl">
+                                    Ponosni smo na dugogodišnju saradnju sa preko 60 domaćih i regionalnih kompanija iz oblasti proizvodnje, trgovine, transporta, ugostiteljstva, IT sektora itd.
+                                </p>
+                            </div>
+
+                            <div id="clients-mobile-arrows" class="flex lg:hidden items-center gap-3 self-start shrink-0">
+                                <span class="text-xs font-semibold text-warm-slate mr-1">Prevucite ili pritisnite strelice:</span>
+                                <button onclick="scrollClientsGrid(-1)" aria-label="Prethodni klijenti" class="w-11 h-11 rounded-xl bg-white border border-warm-border hover:border-forest hover:bg-forest hover:text-white text-forest flex items-center justify-center shadow-sm transition">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <button onclick="scrollClientsGrid(1)" aria-label="Sljedeći klijenti" class="w-11 h-11 rounded-xl bg-white border border-warm-border hover:border-forest hover:bg-forest hover:text-white text-forest flex items-center justify-center shadow-sm transition">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div 
+                                id="clients-scroll-container" 
+                                class="flex items-start gap-4 sm:gap-6 overflow-x-auto no-scrollbar grab-scroll py-3 px-[14%] sm:px-1 snap-x snap-mandatory scroll-smooth"
+                            >
+                            </div>
+
+                            <div id="clients-fade-left" class="pointer-events-none opacity-0 absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-warm-bg/85 via-warm-bg/35 to-transparent flex items-center justify-start pl-1 sm:pl-2 transition-opacity duration-300 z-10">
+                                <button id="clients-left-btn" onclick="scrollClientsGrid(-1)" aria-label="Prethodni klijent" class="hidden lg:flex pointer-events-none w-11 h-11 rounded-full bg-forest hover:bg-bronze text-warm-bg shadow-xl border-2 border-warm-bg items-center justify-center transition transform hover:scale-105">
+                                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                                </button>
+                            </div>
+
+                            <div id="clients-fade-right" class="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-warm-bg/85 via-warm-bg/35 to-transparent flex items-center justify-end pr-1 sm:pr-2 transition-opacity duration-300 z-10">
+                                <button id="clients-right-btn" onclick="scrollClientsGrid(1)" aria-label="Sljedeći klijent" class="hidden lg:flex pointer-events-auto w-11 h-11 rounded-full bg-forest hover:bg-bronze text-warm-bg shadow-xl border-2 border-warm-bg items-center justify-center transition transform hover:scale-105">
+                                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="resp-stack mt-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="w-40 sm:w-56 h-1.5 bg-warm-cream rounded-full overflow-hidden">
+                                <div id="clients-scroll-progress" class="h-full bg-bronze rounded-full transition-all duration-300" style="width: 20%;"></div>
+                            </div>
+                            <p class="text-xs text-warm-slate flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-left-right text-bronze"></i>
+                                <span>Ovdje su prikazani neki od 60+ klijenata koji nam pružaju svoje povjerenje.</span>
+                            </p>
+                        </div>
+
+                    </section>
+
+                    <section id="rokovi" class="resp-section-pad py-16 sm:py-24 bg-forest text-warm-bg relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10 prestige-pattern pointer-events-none"></div>
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                            
+                            <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+                                <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-white/10 text-bronze-light border border-bronze/30 mb-3">
+                                    <i class="fa-regular fa-calendar-days"></i> Poreski kalendar Republike Srpske / BiH
+                                </span>
+                                <h2 class="resp-sec-title font-prestige text-3xl sm:text-4xl font-bold text-white">
+                                    Zakonski rokovi o kojima mi brinemo umjesto Vas
+                                </h2>
+                                <p class="mt-3 text-warm-cream/85 text-base">
+                                    Klijenti agencije „Konto“ nikada ne brinu o propuštanju važnih poreskih rokova. Sve prijave pripremamo i podnosimo blagovremeno:
+                                </p>
+                            </div>
+
+                            <div id="rokovi-mobile-controls" class="flex lg:hidden items-center justify-between mb-4">
+                                <span class="text-xs font-semibold text-warm-cream/85 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrows-left-right text-bronze-light"></i>
+                                    <span>Listajte zakonske rokove:</span>
+                                </span>
+                                <div class="flex items-center gap-2.5">
+                                    <button onclick="scrollRokoviCarousel(-1)" aria-label="Prethodni rok" class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 hover:bg-bronze hover:border-bronze text-white flex items-center justify-center shadow-sm transition">
+                                        <i class="fa-solid fa-chevron-left text-xs"></i>
+                                    </button>
+                                    <button onclick="scrollRokoviCarousel(1)" aria-label="Sljedeći rok" class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 hover:bg-bronze hover:border-bronze text-white flex items-center justify-center shadow-sm transition">
+                                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="rokovi-carousel-track" class="flex lg:grid lg:grid-cols-5 gap-5 overflow-x-auto lg:overflow-visible no-scrollbar snap-x snap-mandatory scroll-smooth pb-2">
+                                <div class="rokovi-carousel-card snap-start shrink-0 w-full sm:w-[48%] lg:w-auto bg-white/5 backdrop-blur-sm border border-white/15 rounded-2xl p-6 hover:border-bronze-light transition select-none">
+                                    <div class="flex items-center justify-between mb-5">
+                                        <span class="px-3.5 py-1.5 rounded-xl bg-bronze text-white font-prestige font-bold text-lg shadow">Do 10.</span>
+                                        <span class="text-xs uppercase tracking-wider text-bronze-light font-bold">U mjesecu</span>
+                                    </div>
+                                    <h3 class="font-prestige text-xl font-bold text-white mb-2">PDV prijava i e-Evidencije</h3>
+                                    <p class="text-sm text-warm-cream/80 leading-relaxed">
+                                        Elektronsko podnošenje mjesečne PDV prijave, e-KUF i e-KIF evidencija i uplata PDV obaveze prema UIO BiH za prethodni mjesec.
+                                    </p>
+                                </div>
+
+                                <div class="rokovi-carousel-card snap-start shrink-0 w-full sm:w-[48%] lg:w-auto bg-white/5 backdrop-blur-sm border border-white/15 rounded-2xl p-6 hover:border-bronze-light transition select-none">
+                                    <div class="flex items-center justify-between mb-5">
+                                        <span class="px-3.5 py-1.5 rounded-xl bg-bronze text-white font-prestige font-bold text-lg shadow">Do 10.</span>
+                                        <span class="text-xs uppercase tracking-wider text-bronze-light font-bold">U mjesecu</span>
+                                    </div>
+                                    <h3 class="font-prestige text-xl font-bold text-white mb-2">Akontacija poreza</h3>
+                                    <p class="text-sm text-warm-cream/80 leading-relaxed">
+                                        Uplata mjesečne akontacije poreza na dobit za pravna lica (D.O.O.) i poreza na dohodak od samostalne djelatnosti (SP).
+                                    </p>
+                                </div>
+
+                                <div class="rokovi-carousel-card snap-start shrink-0 w-full sm:w-[48%] lg:w-auto bg-white/5 backdrop-blur-sm border border-white/15 rounded-2xl p-6 hover:border-bronze-light transition select-none">
+                                    <div class="flex items-center justify-center min-h-[40px] mb-5">
+                                        <span class="text-xs uppercase tracking-wider text-bronze-light font-bold">Mjesečno</span>
+                                    </div>
+                                    <h3 class="font-prestige text-xl font-bold text-white mb-2">Obračun plata (Obrazac 1002)</h3>
+                                    <p class="text-sm text-warm-cream/80 leading-relaxed">
+                                        Obračun bruto i neto zarada zaposlenih i elektronsko podnošenje Obrasca 1002 Poreskoj upravi Republike Srpske.
+                                    </p>
+                                </div>
+
+                                <div class="rokovi-carousel-card snap-start shrink-0 w-full sm:w-[48%] lg:w-auto bg-white/5 backdrop-blur-sm border border-white/15 rounded-2xl p-6 hover:border-bronze-light transition select-none">
+                                    <div class="flex items-center justify-between mb-5">
+                                        <span class="px-3.5 py-1.5 rounded-xl bg-bronze text-white font-prestige font-bold text-lg shadow">Do 28.02.</span>
+                                        <span class="text-xs uppercase tracking-wider text-bronze-light font-bold">Godišnje</span>
+                                    </div>
+                                    <h3 class="font-prestige text-xl font-bold text-white mb-2">Završni račun</h3>
+                                    <p class="text-sm text-warm-cream/80 leading-relaxed">
+                                        Izrada i predaja godišnjih finansijskih izvještaja (Bilans stanja, Bilans uspjeha i prateći obrasci) u registar APIF-a za prethodnu poslovnu godinu.
+                                    </p>
+                                </div>
+
+                                <div class="rokovi-carousel-card snap-start shrink-0 w-full sm:w-[48%] lg:w-auto bg-white/5 backdrop-blur-sm border border-white/15 rounded-2xl p-6 hover:border-bronze-light transition select-none">
+                                    <div class="flex items-center justify-between mb-5">
+                                        <span class="px-3.5 py-1.5 rounded-xl bg-bronze text-white font-prestige font-bold text-lg shadow">Do 31.03.</span>
+                                        <span class="text-xs uppercase tracking-wider text-bronze-light font-bold">Godišnje</span>
+                                    </div>
+                                    <h3 class="font-prestige text-xl font-bold text-white mb-2">Poreski bilans</h3>
+                                    <p class="text-sm text-warm-cream/80 leading-relaxed">
+                                        Sastavljanje poreskog bilansa i elektronsko podnošenje godišnjih poreskih prijava poreza na dobit (D.O.O.) i poreza na dohodak (SP) Poreskoj upravi RS.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div id="rokovi-mobile-dots" class="flex lg:hidden items-center justify-center mt-5">
+                                <div class="w-40 sm:w-56 h-1.5 bg-white/15 rounded-full overflow-hidden">
+                                    <div id="rokovi-scroll-progress" class="h-full bg-bronze rounded-full transition-all duration-300" style="width: 20%;"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section id="cesta-pitanja" class="resp-section-pad py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+                        <div class="text-center max-w-3xl mx-auto mb-12">
+                            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-bronze-soft text-bronze-dark border border-bronze/25 mb-3">
+                                <i class="fa-regular fa-circle-question"></i> Česta pitanja privrednika
+                            </span>
+                            <h2 class="resp-sec-title font-prestige text-3xl sm:text-4xl font-bold text-forest">
+                                Odgovori na najčešće nedoumice
+                            </h2>
+                            <p class="text-warm-slate text-base mt-2">
+                                Ukoliko ovdje ne pronađete odgovor na Vaše pitanje, kontaktirajte nas ili posjetite na lokaciji za besplatne uvodne konsultacije.
+                            </p>
+                        </div>
+
+                        <div id="faq-container" class="space-y-4">
+                        </div>
+                    </section>
+
+                    <section id="kontakt" class="resp-section-pad py-16 sm:py-24 bg-warm-cream border-t border-warm-border">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="resp-grid-1 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+                                
+                                <div class="resp-col-span-full lg:col-span-6 space-y-6">
+                                    <div>
+                                        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-forest text-warm-bg mb-3">
+                                            <i class="fa-solid fa-location-dot text-bronze-light"></i> Sjedište agencije „Konto“
+                                        </span>
+                                        <h2 class="resp-sec-title font-prestige text-3xl sm:text-4xl font-bold text-forest">
+                                            Posjetite nas u Zvorniku ili nam pišite
+                                        </h2>
+                                        <p class="text-warm-slate text-base mt-2">
+                                            Naša kancelarija se nalazi u samom centru Zvornika, na adresi <strong>Kralja Petra I Karađorđevića I/8</strong>.
+                                        </p>
+                                    </div>
+
+                                    <div class="resp-grid-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="bg-white p-5 rounded-2xl border border-warm-border shadow-sm">
+                                            <div class="w-9 h-9 rounded-lg bg-bronze-soft text-bronze-dark flex items-center justify-center mb-3">
+                                                <i class="fa-solid fa-location-dot"></i>
+                                            </div>
+                                            <div class="text-xs font-bold uppercase tracking-wider text-warm-slate">Adresa kancelarije</div>
+                                            <div class="font-bold text-forest text-base mt-0.5">Kralja Petra I Karađorđevića I/8</div>
+                                            <div class="text-xs text-warm-slate mt-1">75400 Zvornik</div>
+                                        </div>
+
+                                        <div class="bg-white p-5 rounded-2xl border border-warm-border shadow-sm">
+                                            <div class="w-9 h-9 rounded-lg bg-bronze-soft text-bronze-dark flex items-center justify-center mb-3">
+                                                <i class="fa-solid fa-phone"></i>
+                                            </div>
+                                            <div class="text-xs font-bold uppercase tracking-wider text-warm-slate">Kontakt telefon agencije</div>
+                                            <a href="tel:+38766892554" class="font-bold text-forest hover:text-bronze transition text-base mt-0.5 block">+387 (0)66 892-554</a>
+                                            <div class="text-xs text-warm-slate mt-1">(Poziv/Viber)</div>
+                                        </div>
+
+                                        <div class="bg-white p-5 rounded-2xl border border-warm-border shadow-sm">
+                                            <div class="w-9 h-9 rounded-lg bg-bronze-soft text-bronze-dark flex items-center justify-center mb-3">
+                                                <i class="fa-solid fa-envelope"></i>
+                                            </div>
+                                            <div class="text-xs font-bold uppercase tracking-wider text-warm-slate">E-mail adrese</div>
+                                            <a href="mailto:konto.olivera@yahoo.com" class="font-bold text-forest hover:text-bronze transition text-base mt-0.5 block break-all">konto.olivera@yahoo.com</a>
+                                            <a href="mailto:efiskonto@gmail.com" class="font-bold text-forest hover:text-bronze transition text-base mt-0.5 block break-all">efiskonto@gmail.com</a>
+                                            <div class="text-xs text-warm-slate mt-1">Odgovaramo u najkraćem roku</div>
+                                        </div>
+
+                                        <div class="bg-white p-5 rounded-2xl border border-warm-border shadow-sm">
+                                            <div class="w-9 h-9 rounded-lg bg-bronze-soft text-bronze-dark flex items-center justify-center mb-3">
+                                                <i class="fa-regular fa-clock"></i>
+                                            </div>
+                                            <div class="text-xs font-bold uppercase tracking-wider text-warm-slate">Radno vrijeme</div>
+                                            <div class="font-bold text-forest text-base mt-0.5">Pon – Pet: 08:00 – 16:00h</div>
+                                            <div class="text-xs text-warm-slate mt-1">Vikendom po dogovoru</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rounded-2xl overflow-hidden border-2 border-warm-border bg-forest-dark relative h-72 sm:h-80 shadow-md">
+                                        <iframe 
+                                            src="https://maps.google.com/maps?q=44.3868646,19.1040003+(Knjigovodstvena+Agencija+KONTO)&t=k&z=19&ie=UTF8&iwloc=B&hl=sr&output=embed" 
+                                            class="w-full h-full border-0 block"
+                                            allowfullscreen="" 
+                                            loading="lazy" 
+                                            referrerpolicy="no-referrer-when-downgrade"
+                                            title="Knjigovodstvena Agencija KONTO - Lokacija na Google Mapi">
+                                        </iframe>
+                                        <div class="absolute bottom-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+                                            <a 
+                                                href="https://maps.app.goo.gl/quKHcroUXmuKHBrx8" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer" 
+                                                class="pointer-events-auto px-3.5 py-2 rounded-xl bg-forest hover:bg-forest-light text-warm-bg text-xs font-bold shadow-lg border border-bronze/40 flex items-center gap-1.5 transition"
+                                            >
+                                                <i class="fa-solid fa-location-arrow text-bronze-light"></i> Otvori u Google Mapama
+                                            </a>
+                                            <button 
+                                                onclick="copyAddress()" 
+                                                class="pointer-events-auto px-3.5 py-2 rounded-xl bg-warm-bg/95 hover:bg-white text-forest text-xs font-bold shadow-lg border border-warm-border flex items-center gap-1.5 transition"
+                                            >
+                                                <i class="fa-regular fa-copy text-bronze"></i> Kopiraj adresu i kontakt
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="resp-col-span-full lg:col-span-6">
+                                    <div class="resp-card-pad bg-white rounded-3xl p-7 sm:p-10 border border-warm-border shadow-xl">
+                                        <span class="text-xs font-bold uppercase tracking-wider text-bronze-dark">Direktan kontakt sa agencijom</span>
+                                        <h3 class="font-prestige text-2xl sm:text-3xl font-bold text-forest mt-1">
+                                            Pošaljite nam poruku ili zakažite sastanak
+                                        </h3>
+                                        <p class="text-sm text-warm-slate mt-2 mb-6">
+                                            Popunite kratki formular ispod i naša agencija će Vas kontaktirati u najkraćem roku.
+                                        </p>
+
+                                        <form id="contact-inquiry-form" onsubmit="handleInlineFormSubmit(event)" class="space-y-4">
+                                            <div class="hidden" aria-hidden="true">
+                                                <label for="bot-honeypot-field">Ne popunjavajte ovo polje ako ste čovjek</label>
+                                                <input type="text" id="bot-honeypot-field" name="website_url_check" tabindex="-1" autocomplete="off">
+                                            </div>
+
+                                            <div class="resp-grid-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-xs font-bold uppercase tracking-wider text-warm-charcoal mb-1.5">Ime i prezime *</label>
+                                                    <input type="text" name="ime" required placeholder="npr. Milan Petrović" class="w-full px-4 py-3 rounded-xl border border-warm-border bg-warm-bg/50 focus:bg-white focus:border-forest focus:outline-none text-sm">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-bold uppercase tracking-wider text-warm-charcoal mb-1.5">Naziv firme (opciono)</label>
+                                                    <input type="text" name="firma" placeholder="npr. Drina-Promet d.o.o." class="w-full px-4 py-3 rounded-xl border border-warm-border bg-warm-bg/50 focus:bg-white focus:border-forest focus:outline-none text-sm">
+                                                </div>
+                                            </div>
+
+                                            <div class="resp-grid-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-xs font-bold uppercase tracking-wider text-warm-charcoal mb-1.5">Broj telefona *</label>
+                                                    <input type="tel" name="telefon" required placeholder="" class="w-full px-4 py-3 rounded-xl border border-warm-border bg-warm-bg/50 focus:bg-white focus:border-forest focus:outline-none text-sm">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-bold uppercase tracking-wider text-warm-charcoal mb-1.5">E-mail adresa</label>
+                                                    <input type="email" name="email" placeholder="vas@email.com" class="w-full px-4 py-3 rounded-xl border border-warm-border bg-warm-bg/50 focus:bg-white focus:border-forest focus:outline-none text-sm">
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-xs font-bold uppercase tracking-wider text-warm-charcoal mb-1.5">Vrsta usluge koja Vas zanima</label>
+                                                <select name="usluga" class="w-full px-4 py-3 rounded-xl border border-warm-border bg-warm-bg/50 focus:bg-white focus:border-forest focus:outline-none text-sm">
+                                                    <option>Vođenje knjigovodstva za D.O.O. ili Preduzetnika (SP)</option>
+                                                    <option>Prelazak iz druge knjigovodstvene agencije</option>
+                                                    <option>Osnivanje nove firme ili preduzetničke radnje</option>
+                                                    <option>Poresko savjetovanje ili izrada završnog računa</option>
+                                                    <option>Drugo...</option>
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-xs font-bold uppercase tracking-wider text-warm-charcoal mb-1.5">Vaša poruka ili pitanje</label>
+                                                <textarea name="poruka" rows="3" placeholder="Ukratko opišite Vašu djelatnost ili pitanje..." class="w-full px-4 py-3 rounded-xl border border-warm-border bg-warm-bg/50 focus:bg-white focus:border-forest focus:outline-none text-sm"></textarea>
+                                            </div>
+
+                                            <div class="p-3.5 rounded-xl bg-warm-bg border border-warm-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                                <label for="human-verify-input" class="text-xs font-bold text-warm-charcoal flex items-center gap-2">
+                                                    <i class="fa-solid fa-shield-halved text-bronze"></i>
+                                                    <span>Zaštita od spama: Koliko je <strong id="math-challenge-label" class="text-forest">3 + 4</strong>? *</span>
+                                                </label>
+                                                <input type="number" id="human-verify-input" required placeholder="Rezultat" class="w-full sm:w-28 px-3 py-2 rounded-lg border border-warm-border bg-white focus:border-forest focus:outline-none text-sm font-bold text-center">
+                                            </div>
+
+                                            <button id="contact-submit-btn" type="submit" class="w-full py-4 rounded-xl bg-forest hover:bg-forest-light text-warm-bg font-bold text-sm shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                                <i class="fa-solid fa-paper-plane text-bronze-light"></i>
+                                                <span id="contact-submit-btn-text">Pošaljite upit</span>
+                                            </button>
+                                        </form>
+
+                                        <div id="inline-form-feedback" class="hidden mt-4 p-4 rounded-xl bg-forest-soft border border-forest/20 text-forest text-xs sm:text-sm font-semibold text-center">
+                                            <i class="fa-solid fa-circle-check text-bronze mr-1.5"></i> Hvala Vam na povjerenju! Vaša poruka je uspješno primljena. Kontaktiraćemo Vas uskoro.
+                                        </div>
+                                        <div id="inline-form-error" class="hidden mt-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs sm:text-sm font-semibold text-center"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer class="bg-forest-dark text-warm-cream/80 py-12 pb-24 border-t border-white/10 text-sm">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="resp-stack flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-white/10">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-bronze text-white font-prestige font-bold text-xl flex items-center justify-center shrink-0">
+                                        K
+                                    </div>
+                                    <div>
+                                        <div class="font-prestige font-bold text-white text-lg">KONTO — Agencija za knjigovodstveno-računovodstvene usluge</div>
+                                        <div class="text-xs text-warm-cream/70">JIB: 4506450700008</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-5 text-xs font-semibold uppercase tracking-wider">
+                                    <a href="#pocetna" class="hover:text-bronze-light transition">Početna</a>
+                                    <a href="#usluge" class="hover:text-bronze-light transition">Usluge</a>
+                                    <a href="#poslovodja" class="hover:text-bronze-light transition">Poslovođa</a>
+                                    <a href="#klijenti" class="hover:text-bronze-light transition">Klijenti</a>
+                                    <a href="#rokovi" class="hover:text-bronze-light transition">Poreski kalendar</a>
+                                    <a href="#kontakt" class="hover:text-bronze-light transition">Kontakt</a>
+                                </div>
+                            </div>
+                            <div class="resp-stack pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-warm-cream/60">
+                                <div>© <span id="current-year">2026</span> Agencija „Konto“ Zvornik. Sva prava zadržana.</div>
+                            </div>
+                        </div>
+                    </footer>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast" class="fixed top-5 right-5 z-50 hidden bg-forest text-white px-4 py-3 rounded-xl shadow-2xl border border-bronze/40 flex items-center gap-3 text-sm">
+        <i class="fa-solid fa-circle-check text-bronze-light text-lg"></i>
+        <span id="toast-msg">Akcija uspješna!</span>
+    </div>
+
+    <script>
+        const clientsList = [
+            {
+                name: "MATIX d.o.o.",
+                image: "slike/klijent_matix.jpg"
+            },
+            {
+                name: "M&V GROUP d.o.o.",
+                image: "slike/klijent_mv.jpg"
+            },
+            {
+                name: 'UR "OBRENOVAC"',
+                image: "slike/klijent_obrenovac.png"
+            },
+            {
+                name: "SARIĆ d.o.o.",
+                image: "slike/klijent_saric.jpg"
+            },
+            {
+                name: "PGD d.o.o.",
+                image: "slike/klijent_pgd.png"
+            },
+            {
+                name: 'RESTORAN "304"',
+                image: "slike/klijent_304.jpg"
+            },
+            {
+                name: "BISPAK d.o.o.",
+                image: "slike/klijent_bispak.png"
+            },
+            {
+                name: "ZTR DEELGROS-KOMERC",
+                image: "slike/klijent_deelgros.jpg"
+            },
+            {
+                name: "PUB KRIZNI ŠTAB",
+                image: "slike/klijent_krizni.jpg"
+            },
+            {
+                name: "D-TRANS d.o.o.",
+                image: "slike/klijent_dtrans.jpg"
+            }
+        ];
+
+        const faqData = [
+            {
+                q: "Kako izgleda prelazak iz druge knjigovodstvene agencije u agenciju „Konto“?",
+                a: "Prelazak je za Vas potpuno jednostavan i bez zastoja u radu. Poslovođa Olivera Radovanović preuzima stručnu komunikaciju sa Vašom prethodnom agencijom, vrši zapisničku primopredaju bruto bilansa, analitičkih kartica i dokumentacije, te provjerava ispravnost početnih stanja u Poreskoj upravi i UIO."
+            },
+            {
+                q: "Da li se više isplati otvoriti Preduzetničku radnju (SP) ili D.O.O.?",
+                a: "Izbor zavisi od planiranog godišnjeg prometa, vrste djelatnosti i odgovornosti. Za uslužne i zanatske djelatnosti sa manjim prometom, SP nudi niže troškove osnivanja i jednostavnije raspolaganje sredstvima, dok je za veći promet, uvoz-izvoz i tendere D.O.O. optimalan okvir."
+            },
+            {
+                q: "Moram li lično donositi dokumentaciju svakog mjeseca u kancelariju u Zvorniku?",
+                a: "To uglavnom zavisi od djelatnosti koja se obavlja i vrste izvorne dokumentacije, kao i od načina poslovanja sa bankom."
+            }
+        ];
+
+        let openFaqIdx = -1;
+        let initialSiteHTML = "";
+
+        function renderClientsGrid() {
+            const container = document.getElementById('clients-scroll-container');
+            if (!container) return;
+
+            container.innerHTML = clientsList.map((client) => `
+                <div 
+                    draggable="false"
+                    class="client-logo-item snap-center sm:snap-start shrink-0 w-[72%] sm:w-[32%] lg:w-[18.2%] group block select-none"
+                >
+                    <div class="w-full h-40 sm:h-44 p-3 rounded-lg overflow-hidden border border-warm-border bg-white shadow-sm group-hover:shadow-lg group-hover:border-bronze transition-all duration-300 flex items-center justify-center">
+                        <img 
+                            src="${client.image}" 
+                            alt="${client.name}" 
+                            draggable="false"
+                            onerror="this.src='https://placehold.co/600x420/1B3B2B/FAF7F2?text=Klijent'"
+                            class="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-500"
+                        >
+                    </div>
+                    <h3 class="mt-3 font-prestige font-bold text-forest group-hover:text-bronze text-center text-base sm:text-lg leading-snug transition-colors truncate px-1" title="${client.name}">
+                        ${client.name}
+                    </h3>
+                </div>
+            `).join('');
+        }
+
+        function scrollServicesCarousel(direction) {
+            const track = document.getElementById('services-carousel-track');
+            if (!track) return;
+            const firstCard = track.querySelector('.service-carousel-card');
+            const gap = 24;
+            const step = firstCard ? (firstCard.offsetWidth + gap) : 340;
+            track.scrollBy({ left: step * direction, behavior: 'smooth' });
+        }
+
+        function scrollToServiceIndex(index) {
+            const track = document.getElementById('services-carousel-track');
+            if (!track) return;
+            const cards = track.querySelectorAll('.service-carousel-card');
+            if (cards[index]) {
+                track.scrollTo({ left: cards[index].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+            }
+        }
+
+        function initServicesCarousel() {
+            const track = document.getElementById('services-carousel-track');
+            const fadeMaskRight = document.getElementById('services-fade-mask');
+            const fadeMaskLeft = document.getElementById('services-fade-mask-left');
+            const rightFloatBtn = document.getElementById('services-right-float-btn');
+            const leftFloatBtn = document.getElementById('services-left-float-btn');
+            const progressBar = document.getElementById('services-scroll-progress');
+            if (!track) return;
+
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            track.addEventListener('mousedown', (e) => {
+                isDown = true;
+                track.classList.add('active');
+                startX = e.pageX - track.offsetLeft;
+                scrollLeft = track.scrollLeft;
+            });
+            track.addEventListener('mouseleave', () => {
+                isDown = false;
+                track.classList.remove('active');
+            });
+            track.addEventListener('mouseup', () => {
+                isDown = false;
+                track.classList.remove('active');
+            });
+            track.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - track.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                track.scrollLeft = scrollLeft - walk;
+            });
+
+            const updateCarouselMasks = () => {
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                const currentScroll = track.scrollLeft;
+
+                if (fadeMaskLeft) {
+                    const showLeft = currentScroll > 16;
+                    fadeMaskLeft.style.opacity = showLeft ? '1' : '0';
+                    if (leftFloatBtn) {
+                        leftFloatBtn.style.pointerEvents = showLeft ? 'auto' : 'none';
+                    }
+                }
+
+                if (fadeMaskRight) {
+                    const showRight = (maxScroll - currentScroll) > 16;
+                    fadeMaskRight.style.opacity = showRight ? '1' : '0';
+                    if (rightFloatBtn) {
+                        rightFloatBtn.style.pointerEvents = showRight ? 'auto' : 'none';
+                    }
+                }
+
+                if (progressBar) {
+                    if (maxScroll <= 0) {
+                        progressBar.style.width = '100%';
+                    } else {
+                        const pct = Math.max(15, Math.min(100, Math.round((currentScroll / maxScroll) * 85) + 15));
+                        progressBar.style.width = pct + '%';
+                    }
+                }
+            };
+
+            track.addEventListener('scroll', updateCarouselMasks);
+            updateCarouselMasks();
+        }
+
+        function scrollRokoviCarousel(direction) {
+            const track = document.getElementById('rokovi-carousel-track');
+            if (!track) return;
+            const firstCard = track.querySelector('.rokovi-carousel-card');
+            const gap = 20;
+            const step = firstCard ? (firstCard.offsetWidth + gap) : 320;
+            track.scrollBy({ left: step * direction, behavior: 'smooth' });
+        }
+
+        function scrollToRokoviIndex(index) {
+            const track = document.getElementById('rokovi-carousel-track');
+            if (!track) return;
+            const cards = track.querySelectorAll('.rokovi-carousel-card');
+            if (cards[index]) {
+                track.scrollTo({ left: cards[index].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+            }
+        }
+
+        function initRokoviCarousel() {
+            const track = document.getElementById('rokovi-carousel-track');
+            const progressBar = document.getElementById('rokovi-scroll-progress');
+            if (!track) return;
+
+            const updateRokoviProgress = () => {
+                if (!progressBar) return;
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                const currentScroll = track.scrollLeft;
+                if (maxScroll <= 0) {
+                    progressBar.style.width = '100%';
+                } else {
+                    const pct = Math.max(20, Math.min(100, Math.round((currentScroll / maxScroll) * 80) + 20));
+                    progressBar.style.width = pct + '%';
+                }
+            };
+
+            track.addEventListener('scroll', updateRokoviProgress);
+            updateRokoviProgress();
+        }
+
+        let clientsAutoScrollInterval = null;
+        let clientsAutoResumeTimeout = null;
+        let resetClientsAutoScrollTimer = null;
+
+        function scrollClientsGrid(direction) {
+            const container = document.getElementById('clients-scroll-container');
+            if (!container) return;
+
+            const shell = document.getElementById('app-shell');
+            const isMobile = window.innerWidth < 768 || (shell && shell.classList.contains('mobile-mode'));
+            const items = Array.from(container.querySelectorAll('.client-logo-item'));
+
+            if (isMobile && items.length) {
+                const sliderCenter = container.scrollLeft + container.clientWidth / 2;
+                let closestIdx = 0;
+                let minDiff = Infinity;
+                items.forEach((item, idx) => {
+                    const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+                    const diff = Math.abs(itemCenter - sliderCenter);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestIdx = idx;
+                    }
+                });
+                const targetIdx = (closestIdx + direction + items.length) % items.length;
+                const targetItem = items[targetIdx];
+                const targetScrollLeft = targetItem.offsetLeft - (container.clientWidth - targetItem.offsetWidth) / 2;
+                container.scrollTo({ left: Math.max(0, targetScrollLeft), behavior: 'smooth' });
+            } else {
+                const firstItem = items[0];
+                const gap = window.innerWidth < 640 ? 16 : 24;
+                const step = firstItem ? (firstItem.offsetWidth + gap) : 260;
+                container.scrollBy({ left: step * direction, behavior: 'smooth' });
+            }
+
+            if (typeof resetClientsAutoScrollTimer === 'function') {
+                resetClientsAutoScrollTimer();
+            }
+        }
+
+        function initClientsDragScroll() {
+            const slider = document.getElementById('clients-scroll-container');
+            const progressBar = document.getElementById('clients-scroll-progress');
+            const fadeLeft = document.getElementById('clients-fade-left');
+            const fadeRight = document.getElementById('clients-fade-right');
+            const leftBtn = document.getElementById('clients-left-btn');
+            const rightBtn = document.getElementById('clients-right-btn');
+            if (!slider) return;
+
+            let isDown = false;
+            let isDragging = false;
+            let startX;
+            let scrollLeft;
+
+            const isMobileClientsView = () => {
+                const shell = document.getElementById('app-shell');
+                return window.innerWidth < 768 || (shell && shell.classList.contains('mobile-mode'));
+            };
+
+            const getCenteredItemIndex = () => {
+                const items = Array.from(slider.querySelectorAll('.client-logo-item'));
+                if (!items.length) return 0;
+                const sliderCenter = slider.scrollLeft + slider.clientWidth / 2;
+                let closestIdx = 0;
+                let minDiff = Infinity;
+                items.forEach((item, idx) => {
+                    const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+                    const diff = Math.abs(itemCenter - sliderCenter);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestIdx = idx;
+                    }
+                });
+                return closestIdx;
+            };
+
+            const scrollToClientCentered = (index) => {
+                const items = slider.querySelectorAll('.client-logo-item');
+                if (!items.length) return;
+                const targetIdx = (index + items.length) % items.length;
+                const targetItem = items[targetIdx];
+                const targetScrollLeft = targetItem.offsetLeft - (slider.clientWidth - targetItem.offsetWidth) / 2;
+                slider.scrollTo({ left: Math.max(0, targetScrollLeft), behavior: 'smooth' });
+            };
+
+            const stopAutoScroll = () => {
+                if (clientsAutoScrollInterval) {
+                    clearInterval(clientsAutoScrollInterval);
+                    clientsAutoScrollInterval = null;
+                }
+                if (clientsAutoResumeTimeout) {
+                    clearTimeout(clientsAutoResumeTimeout);
+                    clientsAutoResumeTimeout = null;
+                }
+            };
+
+            const startAutoScroll = () => {
+                stopAutoScroll();
+                clientsAutoScrollInterval = setInterval(() => {
+                    if (!isMobileClientsView() || isDown) return;
+                    const items = slider.querySelectorAll('.client-logo-item');
+                    if (!items.length) return;
+                    const currentIdx = getCenteredItemIndex();
+                    const nextIdx = (currentIdx + 1) % items.length;
+                    scrollToClientCentered(nextIdx);
+                }, 2000);
+            };
+
+            const pauseAndScheduleResume = () => {
+                stopAutoScroll();
+                clientsAutoResumeTimeout = setTimeout(() => {
+                    startAutoScroll();
+                }, 2000);
+            };
+
+            resetClientsAutoScrollTimer = pauseAndScheduleResume;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                isDragging = false;
+                slider.classList.add('active');
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+                stopAutoScroll();
+            });
+            slider.addEventListener('mouseleave', () => {
+                if (!isDown) return;
+                isDown = false;
+                slider.classList.remove('active');
+                pauseAndScheduleResume();
+            });
+            slider.addEventListener('mouseup', () => {
+                if (!isDown) return;
+                isDown = false;
+                slider.classList.remove('active');
+                pauseAndScheduleResume();
+            });
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                if (Math.abs(walk) > 6) isDragging = true;
+                if (isDragging) {
+                    e.preventDefault();
+                    slider.scrollLeft = scrollLeft - walk;
+                }
+            });
+
+            slider.addEventListener('touchstart', () => {
+                isDown = true;
+                stopAutoScroll();
+            }, { passive: true });
+
+            slider.addEventListener('touchend', () => {
+                isDown = false;
+                pauseAndScheduleResume();
+            }, { passive: true });
+
+            const updateClientsUI = () => {
+                const maxScroll = slider.scrollWidth - slider.clientWidth;
+                const currentScroll = slider.scrollLeft;
+
+                if (fadeLeft) {
+                    const showLeft = currentScroll > 12;
+                    fadeLeft.style.opacity = showLeft ? '1' : '0';
+                    if (leftBtn) leftBtn.style.pointerEvents = showLeft ? 'auto' : 'none';
+                }
+
+                if (fadeRight) {
+                    const showRight = (maxScroll - currentScroll) > 12;
+                    fadeRight.style.opacity = showRight ? '1' : '0';
+                    if (rightBtn) rightBtn.style.pointerEvents = showRight ? 'auto' : 'none';
+                }
+
+                if (progressBar) {
+                    if (maxScroll <= 0) {
+                        progressBar.style.width = '100%';
+                    } else {
+                        const pct = Math.max(15, Math.min(100, Math.round((currentScroll / maxScroll) * 85) + 15));
+                        progressBar.style.width = pct + '%';
+                    }
+                }
+            };
+
+            slider.addEventListener('scroll', updateClientsUI);
+            updateClientsUI();
+            startAutoScroll();
+        }
+
+        function switchCredentialTab(tabName) {
+            const tabs = ['licence', 'ekspertiza', 'obrazovanje'];
+            tabs.forEach(t => {
+                const content = document.getElementById('tab-content-' + t);
+                const btn = document.getElementById('tab-btn-' + t);
+                if (!content || !btn) return;
+                if (t === tabName) {
+                    content.classList.remove('hidden');
+                    btn.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition bg-forest text-white shadow-sm";
+                } else {
+                    content.classList.add('hidden');
+                    btn.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition bg-warm-cream text-warm-charcoal hover:bg-bronze-soft";
+                }
+            });
+        }
+
+        function renderFaqs() {
+            const container = document.getElementById('faq-container');
+            if (!container) return;
+
+            container.innerHTML = faqData.map((item, idx) => {
+                const isOpen = openFaqIdx === idx;
+                return `
+                    <div class="bg-white rounded-2xl border ${isOpen ? 'border-bronze shadow-md' : 'border-warm-border shadow-sm'} overflow-hidden transition">
+                        <button onclick="toggleFaq(${idx})" class="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4">
+                            <span class="font-prestige font-bold text-forest text-base sm:text-lg">${item.q}</span>
+                            <span class="w-8 h-8 rounded-lg ${isOpen ? 'bg-forest text-white' : 'bg-warm-cream text-forest'} flex items-center justify-center shrink-0 transition">
+                                <i class="fa-solid ${isOpen ? 'fa-minus' : 'fa-plus'} text-xs"></i>
+                            </span>
+                        </button>
+                        <div class="${isOpen ? 'block' : 'hidden'} px-5 sm:px-6 pb-6 pt-1 text-sm sm:text-[15px] text-warm-slate leading-relaxed border-t border-warm-border/60">
+                            ${item.a}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleFaq(idx) {
+            openFaqIdx = openFaqIdx === idx ? -1 : idx;
+            renderFaqs();
+        }
+
+        function toggleDropdownMenu(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('header-dropdown-menu');
+            const icon = document.getElementById('hamburger-icon');
+            if (!menu) return;
+
+            const isHidden = menu.classList.contains('hidden');
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                if (icon) icon.className = 'fa-solid fa-xmark text-lg text-forest';
+            } else {
+                menu.classList.add('hidden');
+                if (icon) icon.className = 'fa-solid fa-bars text-lg text-forest';
+            }
+        }
+
+        function closeDropdownMenu() {
+            const menu = document.getElementById('header-dropdown-menu');
+            const icon = document.getElementById('hamburger-icon');
+            if (menu) menu.classList.add('hidden');
+            if (icon) icon.className = 'fa-solid fa-bars text-lg text-forest';
+        }
+
+        document.addEventListener('click', function (e) {
+            const wrapper = document.getElementById('dropdown-menu-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                closeDropdownMenu();
+            }
+        });
+
+        function setViewportMode(mode) {
+            const stage = document.getElementById('viewport-stage');
+            const shell = document.getElementById('app-shell');
+            const btnDesktop = document.getElementById('btn-view-desktop');
+            const btnMobile = document.getElementById('btn-view-mobile');
+
+            if (mode === 'mobile') {
+                stage.classList.add('mobile-mode-stage');
+                shell.classList.add('mobile-mode');
+                btnMobile.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-bronze text-white shadow";
+                btnDesktop.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 text-warm-cream/80 hover:text-white hover:bg-white/10";
+                showToast("Aktiviran je prikaz za mobilni telefon (390px)");
+            } else {
+                stage.classList.remove('mobile-mode-stage');
+                shell.classList.remove('mobile-mode');
+                btnDesktop.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-bronze text-white shadow";
+                btnMobile.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 text-warm-cream/80 hover:text-white hover:bg-white/10";
+                showToast("Aktiviran je prikaz za računar (puna širina)");
+            }
+        }
+
+        function toggleCodeEditor() {
+            const body = document.body;
+            const btn = document.getElementById('btn-toggle-editor');
+            const textarea = document.getElementById('live-code-textarea');
+            const root = document.getElementById('editable-site-root');
+
+            const isOpen = body.classList.contains('editor-open');
+            if (!isOpen) {
+                if (textarea && root) {
+                    textarea.value = root.innerHTML.trim();
+                }
+                body.classList.add('editor-open');
+                btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-bronze text-white shadow";
+                showToast("Uživo Code Editor je otvoren sa lijeve strane");
+            } else {
+                body.classList.remove('editor-open');
+                btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-white/10 text-warm-cream hover:bg-bronze hover:text-white border border-bronze/40";
+            }
+        }
+
+        function applyLiveCodeChanges() {
+            const textarea = document.getElementById('live-code-textarea');
+            const root = document.getElementById('editable-site-root');
+            if (!textarea || !root) return;
+
+            root.innerHTML = textarea.value;
+            initServicesCarousel();
+            initRokoviCarousel();
+            initClientsDragScroll();
+            showToast("Izmjene u kodu su primijenjene na stranicu!");
+        }
+
+        function resetEditorToOriginal() {
+            const textarea = document.getElementById('live-code-textarea');
+            const root = document.getElementById('editable-site-root');
+            if (!initialSiteHTML || !root) return;
+
+            root.innerHTML = initialSiteHTML;
+            if (textarea) textarea.value = initialSiteHTML.trim();
+            initServicesCarousel();
+            initRokoviCarousel();
+            initClientsDragScroll();
+            showToast("Vraćen je početni izgled stranice.");
+        }
+
+        function jumpInEditor(searchString) {
+            const textarea = document.getElementById('live-code-textarea');
+            if (!textarea) return;
+            const content = textarea.value;
+            const index = content.indexOf(searchString);
+            if (index !== -1) {
+                textarea.focus();
+                textarea.setSelectionRange(index, index + searchString.length);
+                const linesBefore = content.substring(0, index).split('\n').length;
+                const lineHeight = 19;
+                textarea.scrollTop = Math.max(0, (linesBefore - 5) * lineHeight);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if (document.body.classList.contains('editor-open')) {
+                    e.preventDefault();
+                    applyLiveCodeChanges();
+                }
+            }
+        });
+
+        const formLoadTimestamp = Date.now();
+        let expectedMathAnswer = 7;
+        let formCooldownTimer = null;
+
+        function generateMathChallenge() {
+            const a = Math.floor(Math.random() * 6) + 2;
+            const b = Math.floor(Math.random() * 5) + 1;
+            expectedMathAnswer = a + b;
+            const label = document.getElementById('math-challenge-label');
+            const input = document.getElementById('human-verify-input');
+            if (label) label.textContent = `${a} + ${b}`;
+            if (input) input.value = '';
+        }
+
+        function showFormError(msg) {
+            const errBox = document.getElementById('inline-form-error');
+            const okBox = document.getElementById('inline-form-feedback');
+            if (okBox) okBox.classList.add('hidden');
+            if (errBox) {
+                errBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> ${msg}`;
+                errBox.classList.remove('hidden');
+            }
+        }
+
+        function startSubmitButtonCooldown(secondsLeft) {
+            const btn = document.getElementById('contact-submit-btn');
+            const btnText = document.getElementById('contact-submit-btn-text');
+            if (!btn || !btnText) return;
+
+            btn.disabled = true;
+            if (formCooldownTimer) clearInterval(formCooldownTimer);
+
+            let remaining = secondsLeft;
+            btnText.textContent = `Sačekajte (${remaining}s) prije novog upita`;
+
+            formCooldownTimer = setInterval(() => {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(formCooldownTimer);
+                    btn.disabled = false;
+                    btnText.textContent = 'Pošaljite upit';
+                } else {
+                    btnText.textContent = `Sačekajte (${remaining}s) prije novog upita`;
+                }
+            }, 1000);
+        }
+
+        function handleInlineFormSubmit(e) {
+            e.preventDefault();
+            const errBox = document.getElementById('inline-form-error');
+            if (errBox) errBox.classList.add('hidden');
+
+            const honeypot = document.getElementById('bot-honeypot-field');
+            if (honeypot && honeypot.value.trim() !== '') {
+                return;
+            }
+
+            if (Date.now() - formLoadTimestamp < 2500) {
+                showFormError("Forma je poslata previše brzo. Molimo pokušajte ponovo.");
+                return;
+            }
+
+            const userMath = parseInt(document.getElementById('human-verify-input')?.value, 10);
+            if (userMath !== expectedMathAnswer) {
+                showFormError("Netačan rezultat sigurnosnog zbira. Molimo provjerite odgovor.");
+                generateMathChallenge();
+                return;
+            }
+
+            const COOLDOWN_MS = 60 * 1000;
+            const MAX_PER_HOUR = 3;
+            const now = Date.now();
+            let history = [];
+            try {
+                history = JSON.parse(localStorage.getItem('konto_form_submissions') || '[]');
+            } catch (_) {
+                history = [];
+            }
+
+            history = history.filter(ts => (now - ts) < 3600000);
+
+            if (history.length > 0 && (now - history[history.length - 1]) < COOLDOWN_MS) {
+                const waitSec = Math.ceil((COOLDOWN_MS - (now - history[history.length - 1])) / 1000);
+                showFormError(`Već ste poslali upit. Molimo sačekajte još ${waitSec} sekundi prije ponovnog slanja.`);
+                startSubmitButtonCooldown(waitSec);
+                return;
+            }
+
+            if (history.length >= MAX_PER_HOUR) {
+                showFormError("Dostigli ste maksimalan broj poslatih upita u jednom satu. Za hitne informacije pozovite +387 (0)66 892-554.");
+                return;
+            }
+
+            history.push(now);
+            try {
+                localStorage.setItem('konto_form_submissions', JSON.stringify(history));
+            } catch (_) {}
+
+            document.getElementById('inline-form-feedback').classList.remove('hidden');
+            e.target.reset();
+            generateMathChallenge();
+            startSubmitButtonCooldown(60);
+            showToast("Vaša poruka je uspješno poslata agenciji Konto!");
+        }
+
+        function copyAddress() {
+            const temp = document.createElement('textarea');
+            temp.value = 'Agencija "Konto", Kralja Petra I Karađorđevića I/8, 75400 Zvornik | Tel: +387 (0)66 892-554 | E-mail: konto.olivera@yahoo.com';
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast("Adresa, telefon i e-mail su kopirani!");
+        }
+
+        let toastTimeout = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            msgEl.textContent = msg;
+            toast.classList.remove('hidden');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        window.onload = function () {
+            const yr = document.getElementById('current-year');
+            if (yr) yr.textContent = new Date().getFullYear();
+            initServicesCarousel();
+            initRokoviCarousel();
+            renderClientsGrid();
+            initClientsDragScroll();
+            renderFaqs();
+            generateMathChallenge();
+
+            const root = document.getElementById('editable-site-root');
+            if (root) {
+                initialSiteHTML = root.innerHTML;
+            }
+        };
+    </script>
+</body>
+</html>
