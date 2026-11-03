@@ -363,11 +363,10 @@
 
                             <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
                                 
-                                <a href="#kontakt" class="header-cta-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-forest hover:bg-forest-light text-warm-bg font-semibold text-xs sm:text-sm shadow-md transition">
-                                    <i class="fa-solid fa-phone text-bronze-light"></i>
-                                    <span class="header-cta-text">Kontaktirajte nas</span>
-                                </a>
-
+                               <a href="#kontakt" aria-label="Kontaktirajte nas" class="header-cta-btn inline-flex items-center justify-center w-11 h-11 md:w-auto md:h-auto md:gap-2 px-0 md:px-5 py-0 md:py-2.5 rounded-xl bg-forest hover:bg-forest-light text-warm-bg font-semibold text-xs sm:text-sm shadow-md transition shrink-0">
+    <i class="fa-solid fa-phone text-bronze-light text-base md:text-sm"></i>
+    <span class="hidden md:inline">Kontaktirajte nas</span>
+</a>
                                 <div id="dropdown-menu-wrapper" class="relative">
                                     <button id="hamburger-btn" onclick="toggleDropdownMenu(event)" aria-label="Otvori navigacioni meni" class="h-11 px-3.5 sm:px-4 rounded-xl border border-warm-border bg-white hover:bg-warm-cream text-forest font-semibold text-sm flex items-center justify-center gap-2.5 shadow-sm transition">
                                         <span class="menu-label-text hidden sm:inline text-xs font-bold uppercase tracking-wider text-forest">Meni</span>
@@ -497,7 +496,7 @@
                                     Stručne knjigovodstvene i poreske usluge
                                 </h2>
                                 <p class="text-warm-slate text-base max-w-2xl leading-relaxed mt-2.5">
-                                    Pružamo kompletnu finansijsku podršku prilagođenu obimu i djelatnosti Vašeg poslovanja - od osnivanja preduzeća do izrade završnih računa i zastupanja pred poreskim organima.
+                                    Pružamo kompletnu knjigovodstvenu podršku prilagođenu obimu i djelatnosti Vašeg poslovanja - od osnivanja preduzeća do izrade završnih računa i zastupanja pred poreskim organima.
                                 </p>
                             </div>
 
@@ -517,13 +516,44 @@
                                 id="services-carousel-track" 
                                 class="flex items-stretch gap-5 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth py-2 px-0.5 grab-scroll"
                             >
+
+<div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
+                                                <i class="fa-solid fa-truck-moving"></i>
+                                            </div>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">01</span>
+                                        </div>
+                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
+                                            Povrat PDV-a prevoznicima iz Srbije, Crne Gore i S. Makedonije
+                                        </h3>
+                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
+                                            Povrat PDV-a prevoznicima koji su registrovani u svojim državama, a bave se prevozom robe kroz teritoriju BiH i sipaju gorivo unutar BiH.
+                                        </p>
+                                    </div>
+                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Kompletna priprema i podnošenje zahtjeva za povrat PDV-a prema UIO BiH</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Obrada računa za kupljeno gorivo i druge prateće troškove u BiH</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5">
+                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
+                                            <span>Zastupanje stranih prevoznika u postupku refundacije pred poreskim organima</span>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
                                     <div>
                                         <div class="flex items-center justify-between mb-6">
                                             <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
                                                 <i class="fa-solid fa-book-open"></i>
                                             </div>
-                                            <span class="font-prestige text-2xl font-bold text-bronze/60">01</span>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">02</span>
                                         </div>
                                         <h3 class="font-prestige text-xl font-bold text-forest mb-3">
                                             Računovodstvo za D.O.O. (Dvojno knjigovodstvo)
@@ -554,7 +584,7 @@
                                             <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
                                                 <i class="fa-solid fa-store"></i>
                                             </div>
-                                            <span class="font-prestige text-2xl font-bold text-bronze/60">02</span>
+                                            <span class="font-prestige text-2xl font-bold text-bronze/60">03</span>
                                         </div>
                                         <h3 class="font-prestige text-xl font-bold text-forest mb-3">
                                             Knjigovodstvo za samostalne preduzetnike (SP)
@@ -575,37 +605,6 @@
                                         <li class="flex items-start gap-2.5">
                                             <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
                                             <span>Godišnje poreske prijave poreza na dohodak</span>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="service-carousel-card snap-start shrink-0 w-full md:w-[46%] lg:w-[29.5%] resp-card-pad bg-white rounded-2xl p-7 sm:p-8 border border-warm-border shadow-sm hover:shadow-xl hover:border-bronze transition-all duration-300 flex flex-col justify-between group select-none">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-6">
-                                            <div class="w-12 h-12 rounded-xl bg-forest text-warm-bg flex items-center justify-center text-xl shadow-sm group-hover:bg-bronze transition">
-                                                <i class="fa-solid fa-truck-moving"></i>
-                                            </div>
-                                            <span class="font-prestige text-2xl font-bold text-bronze/60">03</span>
-                                        </div>
-                                        <h3 class="font-prestige text-xl font-bold text-forest mb-3">
-                                            Povrat PDV-a prevoznicima iz Srbije, Crne Gore i S. Makedonije
-                                        </h3>
-                                        <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
-                                            Povrat PDV-a prevoznicima koji su registrovani u svojim državama, a bave se prevozom robe kroz teritoriju BiH i sipaju gorivo unutar BiH.
-                                        </p>
-                                    </div>
-                                    <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
-                                        <li class="flex items-start gap-2.5">
-                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
-                                            <span>Kompletna priprema i podnošenje zahtjeva za povrat PDV-a prema UIO BiH</span>
-                                        </li>
-                                        <li class="flex items-start gap-2.5">
-                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
-                                            <span>Obrada računa za kupljeno gorivo i druge prateće troškove u BiH</span>
-                                        </li>
-                                        <li class="flex items-start gap-2.5">
-                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
-                                            <span>Zastupanje stranih prevoznika u postupku refundacije pred poreskim organima</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -653,7 +652,7 @@
                                             Obračun plata i kadrovska evidencija
                                         </h3>
                                         <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
-                                            Kompletna briga o radnim odnosima: ugovori o radu, prijave i odjave radnika, obračun zarada, doprinosa, naknada i bolovanja.
+                                            Prijave i odjave radnika, obračun zarada, doprinosa, naknada i bolovanja.
                                         </p>
                                     </div>
                                     <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
@@ -684,21 +683,17 @@
                                             Završni računi i finansijski izvještaji
                                         </h3>
                                         <p class="text-warm-slate text-[15px] leading-relaxed mb-6">
-                                            Izrada godišnjih finansijskih izvještaja (Bilans stanja, Bilans uspjeha, Tokovi gotovine) i predaja u APIF.
+                                            Izrada godišnjih finansijskih izvještaja i predaja u APIF.
                                         </p>
                                     </div>
                                     <ul class="space-y-2.5 pt-5 border-t border-warm-border text-sm text-warm-charcoal">
                                         <li class="flex items-start gap-2.5">
                                             <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
-                                            <span>Redovni godišnji i polugodišnji finansijski obračuni za APIF</span>
+                                            <span>Redovni godišnji obračuni za APIF</span>
                                         </li>
                                         <li class="flex items-start gap-2.5">
                                             <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
                                             <span>Izrada poreskog bilansa i godišnje prijave poreza na dobit</span>
-                                        </li>
-                                        <li class="flex items-start gap-2.5">
-                                            <i class="fa-solid fa-check text-bronze mt-1 text-xs"></i>
-                                            <span>Priprema dokumentacije i boniteta za bankarske kredite</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -781,7 +776,7 @@
                                         <div>
                                             <div class="relative aspect-square w-full rounded-2xl overflow-hidden border-2 border-bronze/50 shadow-lg mb-6">
                                                 <img 
-                                                    src="slike/ol3.png" 
+                                                    src="slike/ol6.jpeg" 
                                                     alt="Olivera Radovanović - Osnivač i poslovođa agencije Konto" 
                                                     onerror="this.src='https://placehold.co/600x600/1B3B2B/FAF7F2?text=Olivera+Radovanovic'"
                                                     class="w-full h-full aspect-square object-cover object-top"
@@ -827,7 +822,7 @@
                                                     <strong>Olivera Radovanović</strong> je osnovala Agenciju za knjigovodstveno-računovodstvene usluge <strong>„Konto“</strong> u Zvorniku 2007. godine, sa vizijom da domaćim privrednicima i preduzetnicima obezbijedi pouzdan oslonac u svim fazama poslovanja.
                                                 </p>
                                                 <p class="text-warm-slate text-base leading-relaxed mt-3">
-                                                    U agenciji lično sa Vama rade kako poslovođa Olivera, tako i njen tim od 4 sertifikovane računovođe i računovodstvena tehničara. 
+                                                    U agenciji lično sa Vama rade kako poslovođa Olivera, tako i njen tim koji čine još 3 knjigovođe sa iskustvom u radu. 
                                                 </p>
                                             </div>
 
@@ -848,7 +843,7 @@
                                                         <p class="text-xs sm:text-sm text-warm-slate mt-0.5">20 godina uspješnog vođenja agencije i saradnje sa preko 100 privrednih subjekata u regiji, kao i 10 godina prijašnjeg iskustva u poslu.</p>
                                                     </div>
                                                     <div class="p-4 rounded-xl bg-warm-bg border border-warm-border">
-                                                        <div class="font-bold text-forest text-sm sm:text-base">Član Saveza računovođa i revizora Republike Srpske</div>
+                                                        <div class="font-bold text-forest text-sm sm:text-base">Član udruženja Glas Računovođa i Revizora Republike Srpske</div>
                                                         <p class="text-xs sm:text-sm text-warm-slate mt-0.5">Aktivno učešće na stručnim savjetovanjima i puna primjena kodeksa profesionalne etike računovođa.</p>
                                                     </div>
                                                 </div>
@@ -861,7 +856,7 @@
                                                     <i class="fa-solid fa-phone"></i>
                                                 </div>
                                                 <div>
-                                                    <div class="text-xs text-warm-slate">Direktan kontakt telefon (Poziv/Viber):</div>
+                                                    <div class="text-xs text-warm-slate">Direktan kontakt telefon (Poziv):</div>
                                                     <a href="tel:+38766892554" class="text-sm font-bold text-forest hover:text-bronze transition">+387 (0)65 954-178</a>
                                                 </div>
                                             </div>
